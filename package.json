@@ -1,0 +1,23 @@
+{
+  "name": "hubs-webpack-starter",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "webpack-dev-server --mode=development"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "hubs-client": "0.0.2",
+    "spoke-client": "0.0.4",
+    "webpack": "^4.43.0",
+    "webpack-cli": "^3.3.11",
+    "webpack-dev-server": "^3.11.0",
+    "@iarna/toml": "^2.2.5",
+    "cors": "^2.8.5",
+    "node-fetch": "^2.6.0",
+    "request": "^2.88.2",
+    "selfsigned": "^1.10.7"
+  }
+}
