@@ -9,15 +9,21 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "hubs-client": "0.0.2",
+    "@babel/core": "^7.10.2",
+    "@babel/plugin-proposal-class-properties": "^7.10.1",
+    "@babel/plugin-syntax-dynamic-import": "^7.8.3",
+    "@babel/preset-env": "^7.10.2",
+    "@babel/preset-react": "^7.10.1",
+    "@iarna/toml": "^2.2.5",
+    "babel-loader": "^8.1.0",
+    "cors": "^2.8.5",
+    "hubs-client": "0.0.3",
+    "node-fetch": "^2.6.0",
+    "request": "^2.88.2",
+    "selfsigned": "^1.10.7",
     "spoke-client": "0.0.4",
     "webpack": "^4.43.0",
     "webpack-cli": "^3.3.11",
-    "webpack-dev-server": "^3.11.0",
-    "@iarna/toml": "^2.2.5",
-    "cors": "^2.8.5",
-    "node-fetch": "^2.6.0",
-    "request": "^2.88.2",
-    "selfsigned": "^1.10.7"
+    "webpack-dev-server": "^3.11.0"
   }
 }

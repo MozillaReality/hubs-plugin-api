@@ -3,6 +3,11 @@ const HubsDevServer = require("./HubsDevServer");
 
 module.exports = async (env, args) => {
   const hubsDevServer = new HubsDevServer();
+
+  const globalVar = "MY_PLUGIN";
+
+  hubsDevServer.registerPlugin("home-page", "js", "/index.plugin.js", { globalVar });
+
   await hubsDevServer.init();
   const https = await hubsDevServer.createHTTPSConfig();
   
@@ -10,10 +15,21 @@ module.exports = async (env, args) => {
     entry: {
       index: "./pages/index.js"
     },
+    module: {
+      rules: [
+        {
+          test: /\.(js)$/,
+          exclude: /node_modules/,
+          use: {
+            loader: "babel-loader"
+          }
+        }
+      ]
+    },
     output: {
       path: path.resolve(__dirname, "dist"),
       filename: "[name].plugin.js",
-      library: "HUBS_PLUGIN",
+      library: globalVar,
       libraryTarget: "umd"
     },
     devServer: {
@@ -25,7 +41,7 @@ module.exports = async (env, args) => {
     },
     devtool: args.mode === "production" ? "source-map" : "eval-source-map",
     externals: {
-      three: "THREE"
+      react: "React"
     }
   };
 };

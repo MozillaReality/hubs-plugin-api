@@ -109,6 +109,7 @@ class HubsDevServer {
     }, options);
 
     this.config = undefined;
+    this.plugins = {};
   }
 
   async createHTTPSConfig() {
@@ -157,6 +158,23 @@ class HubsDevServer {
       cert: pems.cert
     };
   }
+
+  registerPlugin(key, type, url, options) {
+    if (!this.plugins[key]) {
+      this.plugins[key] = [];
+    }
+
+    const pluginDef = {
+      type,
+      url
+    };
+
+    if (options) {
+      pluginDef.options = options;
+    }
+
+    this.plugins[key].push(pluginDef);
+  }
   
   async init() {
     const credentialsPath = path.join(this.options.hubsCacheDir, ".hubs-cloud-credentials");
@@ -166,6 +184,8 @@ class HubsDevServer {
     } else {
       this.config = await createDefaultConfig(this.options.hubsPath);
     }
+
+    this.config.appConfig.plugins = this.plugins;
 
     const metaTags = [];
 
@@ -253,23 +273,25 @@ class HubsDevServer {
     }
 
     if (this.options.hubsPath) {
-      app.get("/", pageHandler(path.join(this.options.hubsPath, "index.html"), this.hubsHeader));
+      const addHubHeaders = (type) => (req, res, next) => {
+        res.header("hub-name", this.config.appConfig.translations.en["app-name"]);
+        res.header("hub-entity-type", type);
+        next();
+      };
+
+      app.get("/", addHubHeaders("hub"), pageHandler(path.join(this.options.hubsPath, "index.html"), this.hubsHeader));
       app.get("/whats-new", pageHandler(path.join(this.options.hubsPath, "whats-new.html"), this.hubsHeader));
       app.get("/cloud", pageHandler(path.join(this.options.hubsPath, "cloud.html"), this.hubsHeader));
       app.get("/discord", pageHandler(path.join(this.options.hubsPath, "discord.html"), this.hubsHeader));
       app.get("/link/?*", pageHandler(path.join(this.options.hubsPath, "link.html"), this.hubsHeader));
-      app.get("/scene/?*", pageHandler(path.join(this.options.hubsPath, "scene.html"), this.hubsHeader));
-      app.get("/avatar/?*", pageHandler(path.join(this.options.hubsPath, "avatar.html"), this.hubsHeader));
+      app.get("/scene/?*", addHubHeaders("scene"), pageHandler(path.join(this.options.hubsPath, "scene.html"), this.hubsHeader));
+      app.get("/avatar/?*", addHubHeaders("avatar"), pageHandler(path.join(this.options.hubsPath, "avatar.html"), this.hubsHeader));
       app.use(serveStatic(this.options.hubsPath));
 
       const hubPageHandler = pageHandler(path.join(this.options.hubsPath, "hub.html"), this.hubsHeader);
-      app.use("*", (req, res, next) => {
-        if ((req.method === "GET" || req.method === "HEAD") && req.accepts("html")) {
-          return hubPageHandler(req, res);
-        } else {
-          return next();
-        }
-      });
+      app.get("/hub.html*", addHubHeaders("room"), hubPageHandler);
+      app.get(/[a-zA-Z0-9]{7}/, addHubHeaders("room"), hubPageHandler);
+      app.get(/[a-zA-Z0-9]{7}\/*/, addHubHeaders("room"), hubPageHandler);
     }
   }
 }
