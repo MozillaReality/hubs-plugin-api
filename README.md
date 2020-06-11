@@ -10,7 +10,7 @@ Please give us feedback on the API in the #extensibility channel on our [Discord
 
 Run the following commands:
 
-```
+```bash
 git clone https://github.com/MozillaReality/hubs-plugin-api.git
 cd hubs-plugin-api
 npm install
@@ -107,11 +107,11 @@ Our webpack config also lets you use ES2015 imports because of the externals con
 import Hubs from "hubs";
 ```
 
-At this time these are the following exported members:
+At this time these are the exported members:
 
 ```js
 window.Hubs = {
-  configs,
+  config,
   PhoenixUtils,
   React: {
     Common: {
@@ -136,21 +136,107 @@ window.Hubs = {
 };
 ```
 
-- `Hubs.configs` - App Config Utilities
-- `Hubs.PhoenixUtils` - Phoenix Utilities
-- `Hubs.React` - React Components, Hooks, and Styles
-  - `Hubs.React.Common` - Components and styles available on all pages.
-    - `Hubs.React.Common.PageStyles` - CSS module containing styles used across all pages (typography, CSS reset, etc.).
-    - `Hubs.React.Common.Page` - React Component for wrapping a page. Includes the page styles, header, and footer.
-    - `Hubs.React.Common.IfFeature` - Conditionally render children if a feature is enabled in the server's app config.
-    - `Hubs.React.Common.AuthContext` - React context for all user authentication methods and variables.
-  - `Hubs.React.Media` - Components and styles available where we display items from the media API (images, videos, models, rooms, scenes, etc.)
-    - `Hubs.React.Common.Tiles` - Media Grid React component
-    - `Hubs.React.Common.Styles` - CSS module for styles related to the media grid
-  - `Hubs.React.HomePage` - Components and Hooks available on the home page.
-    - `Hubs.React.HomePage.PWAButton` - Button for installing the Hubs Progressive Web App
-    - `Hubs.React.HomePage.CreateRoomButton` - Button for creating and redirecting to a Hubs Room
-    - `Hubs.React.HomePage.useFeaturedRooms` - Hook for loading public/favorited rooms
-    - `Hubs.React.HomePage.useHomePageRedirect` - Hook for redirecting to verification page when clicking on the magic link in the login email.
-    - `Hubs.React.HomePage.Styles` - CSS module for all the base home page styles
-    - `Hubs.React.HomePage.discordLogoSmall` - url for the Discord logo to be used for the discord bot message
+- [Hubs.config](#Hubs.config) - App Config Utilities
+- [Hubs.PhoenixUtils](#Hubs.PhoenixUtils) - Phoenix Utilities
+- [Hubs.React](#Hubs.React) - React Components, Hooks, and Styles
+  - [Hubs.React.Common](#Hubs.React.Common) - Components and styles available on all pages.
+    - [Hubs.React.Common.PageStyles](#Hubs.React.Common.PageStyles) - CSS module containing styles used across all pages (typography, CSS reset, etc.).
+    - [Hubs.React.Common.Page](#Hubs.React.Common.Page) - React Component for wrapping a page. Includes the page styles, header, and footer.
+    - [Hubs.React.Common.IfFeature](#Hubs.React.Common.IfFeature) - Conditionally render children if a feature is enabled in the server's app config.
+    - [Hubs.React.Common.AuthContext](#Hubs.React.Common.AuthContext) - React context for all user authentication methods and variables.
+  - [Hubs.React.Media](#Hubs.React.Media) - Components and styles available where we display items from the media API (images, videos, models, rooms, scenes, etc.)
+    - [Hubs.React.Common.Tiles](#Hubs.React.Common.Tiles) - Media Grid React component
+    - [Hubs.React.Common.Styles](#Hubs.React.Common.Styles) - CSS module for styles related to the media grid
+  - [Hubs.React.HomePage](#Hubs.React.HomePage) - Components and Hooks available on the home page.
+    - [Hubs.React.HomePage.PWAButton](#Hubs.React.HomePage.PWAButton) - Button for installing the Hubs Progressive Web App
+    - [Hubs.React.HomePage.CreateRoomButton](#Hubs.React.HomePage.CreateRoomButton) - Button for creating and redirecting to a Hubs Room
+    - [Hubs.React.HomePage.useFeaturedRooms](#Hubs.React.HomePage.useFeaturedRooms) - Hook for loading public/favorited rooms
+    - [Hubs.React.HomePage.useHomePageRedirect](#Hubs.React.HomePage.useHomePageRedirect) - Hook for redirecting to verification page when clicking on the magic link in the login email.
+    - [Hubs.React.HomePage.Styles](#Hubs.React.HomePage.Styles) - CSS module for all the base home page styles
+    - [Hubs.React.HomePage.discordLogoSmall](#Hubs.React.HomePage.discordLogoSmall) - url for the Discord logo to be used for the discord bot message
+
+### Hubs.config
+
+  #### .feature(featureName)
+
+  Check if a feature is enabled by the current app config. Features are defined in the Hubs [schema.toml](https://github.com/mozilla/hubs/blob/master/src/schema.toml) file and correspond to configuration in the admin panel.
+
+  Example:
+
+  ```js
+    Hubs.config.feature("disable_room_creation") === false
+  ```
+  
+  #### .image(imageName, cssUrl?)
+
+  Get an image url from the current app config. Images are defined in the Hubs [schema.toml](https://github.com/mozilla/hubs/blob/master/src/schema.toml) file and correspond to configuration in the admin panel.
+
+  Example:
+
+  ```js
+    Hubs.config.image("logo") === "https://my-hubs-cloud.com/logo.png";
+
+    // cssUrl = true
+    Hubs.config.image("logo", true) === "url(https://my-hubs-cloud.com/logo.png)";
+  ```
+
+  #### .link(linkName, defaultValue?)
+
+  Get a url from the current app config. Links are defined in the Hubs [schema.toml](https://github.com/mozilla/hubs/blob/master/src/schema.toml) file and correspond to configuration in the admin panel.
+
+  Example:
+
+  ```js
+    Hubs.config.link("docs", "https://hubs.mozilla.com/docs") === "https://hubs.mozilla.com/docs";
+  ```
+
+### Hubs.PhoenixUtils
+  To Do
+
+### Hubs.React
+  To Do
+
+### Hubs.React.Common
+  To Do
+
+### Hubs.React.Common.PageStyles
+  To Do
+
+### Hubs.React.Common.Page
+  To Do
+
+### Hubs.React.Common.IfFeature
+  To Do
+
+### Hubs.React.Common.AuthContext
+  To Do
+
+### Hubs.React.Media
+  To Do
+
+### Hubs.React.Common.Tiles
+  To Do
+
+### Hubs.React.Common.Styles
+  To Do
+
+### Hubs.React.HomePage
+  To Do
+
+### Hubs.React.HomePage.PWAButton
+  To Do
+
+### Hubs.React.HomePage.CreateRoomButton
+  To Do
+
+### Hubs.React.HomePage.useFeaturedRooms
+  To Do
+
+### Hubs.React.HomePage.useHomePageRedirect
+  To Do
+
+### Hubs.React.HomePage.Styles
+  To Do
+
+### Hubs.React.HomePage.discordLogoSmall
+  To Do
