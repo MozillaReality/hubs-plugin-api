@@ -4,7 +4,7 @@ Example project to showcase Hubs plugin development with Webpack
 
 To develop against dev.reticulum.io:
 
-``
+```
 git clone https://github.com/MozillaReality/hubs-webpack-starter.git
 cd hubs-webpack-starter
 npm install
