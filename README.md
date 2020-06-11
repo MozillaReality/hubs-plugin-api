@@ -14,3 +14,5 @@ npm start
 Open https://localhost:8080
 
 Modify `pages/index.js` to modify the landing page. Comment out the exported function to load the default landing page.
+
+Run `npm run build` to see what a production build looks like.
