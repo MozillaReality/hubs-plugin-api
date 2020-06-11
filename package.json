@@ -1,14 +1,12 @@
 {
-  "name": "hubs-webpack-starter",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "name": "hubs-plugin-api",
+  "private": true,
+  "version": "0.0.1",
   "scripts": {
     "start": "webpack-dev-server --mode=development",
     "build": "webpack --mode=production"
   },
-  "author": "",
-  "license": "ISC",
+  "license": "MPL-2.0",
   "devDependencies": {
     "@babel/core": "^7.10.2",
     "@babel/plugin-proposal-class-properties": "^7.10.1",
