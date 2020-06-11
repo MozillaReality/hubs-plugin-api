@@ -1,5 +1,5 @@
 const path = require("path");
-const HubsDevServer = require("./HubsDevServer");
+const HubsDevServer = require("./server/HubsDevServer");
 
 module.exports = async (env, args) => {
   const hubsDevServer = new HubsDevServer();
