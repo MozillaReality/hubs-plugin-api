@@ -161,7 +161,7 @@ window.Hubs = {
 
   Check if a feature is enabled by the current app config. Features are defined in the Hubs [schema.toml](https://github.com/mozilla/hubs/blob/master/src/schema.toml) file and correspond to configuration in the admin panel.
 
-  *Example:*
+  **Example:**
 
   ```js
     Hubs.config.feature("disable_room_creation") === false
@@ -171,7 +171,7 @@ window.Hubs = {
 
   Get an image url from the current app config. Images are defined in the Hubs [schema.toml](https://github.com/mozilla/hubs/blob/master/src/schema.toml) file and correspond to configuration in the admin panel.
 
-  *Example:*
+  **Example:**
 
   ```js
     Hubs.config.image("logo") === "https://my-hubs-cloud.com/logo.png";
@@ -184,7 +184,7 @@ window.Hubs = {
 
   Get a url from the current app config. Links are defined in the Hubs [schema.toml](https://github.com/mozilla/hubs/blob/master/src/schema.toml) file and correspond to configuration in the admin panel.
 
-  *Example:*
+  **Example:**
 
   ```js
     Hubs.config.link("docs", "https://hubs.mozilla.com/docs") === "https://hubs.mozilla.com/docs";
