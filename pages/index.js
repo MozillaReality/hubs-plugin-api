@@ -3,7 +3,7 @@ import { FormattedMessage } from "react-intl";
 import classNames from "classnames";
 import Hubs from "hubs";
 const {
-  configs,
+  config,
   React: {
     Common: {
       Page,
@@ -31,15 +31,15 @@ export function HomePage() {
   const featuredRooms = useFeaturedRooms();
   const auth = useContext(AuthContext);
 
-  const canCreateRooms = !configs.feature("disable_room_creation") || auth.isAdmin;
+  const canCreateRooms = !config.feature("disable_room_creation") || auth.isAdmin;
 
   return (
     <Page className={classNames(styles.homePage, customStyles.page)}>
-      <div className={styles.heroContent} style={{ backgroundImage: configs.image("home_background", true) }}>
+      <div className={styles.heroContent} style={{ backgroundImage: config.image("home_background", true) }}>
         <div className={styles.heroPanel}>
           <div className={styles.container}>
             <div className={classNames([styles.logo, styles.logoMargin])}>
-              <img src={configs.image("logo")} />
+              <img src={config.image("logo")} />
             </div>
             {featuredRooms.length === 0 && (
               <div className={styles.blurb}>

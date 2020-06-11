@@ -9,7 +9,7 @@ const generateSelfsignedAsync = promisify(selfsigned.generate);
 const TOML = require("@iarna/toml");
 const fetch = require("node-fetch");
 
-async function createDefaultConfig(hubsPath) {
+async function createDefaultConfig(hubsPath, port) {
   const schemaPath = path.join(hubsPath, "schema.toml");
   const schemaString = (await fs.promises.readFile(schemaPath)).toString();
 
@@ -47,10 +47,10 @@ async function createDefaultConfig(hubsPath) {
   };
 
   const env = {
-    HUBS_SERVER:"localhost:8080",
+    HUBS_SERVER:`localhost:${port}`,
     RETICULUM_SERVER: "dev.reticulum.io",
     SHORTLINK_DOMAIN: "hubs.link",
-    CORS_PROXY_SERVER: "localhost:8080/cors-proxy",
+    CORS_PROXY_SERVER: `localhost:${port}/cors-proxy`,
     THUMBNAIL_SERVER: "nearspark-dev.reticulum.io",
     NON_CORS_PROXY_DOMAINS: "localhost",
     IS_MOZ: "false"
@@ -59,7 +59,7 @@ async function createDefaultConfig(hubsPath) {
   return { appConfig, env };
 }
 
-async function loadRemoteConfig(credentialsPath) {
+async function loadRemoteConfig(credentialsPath, port) {
   const { host, token } = JSON.parse(await fs.promises.readFile(credentialsPath));
 
   const headers = {
@@ -87,11 +87,11 @@ async function loadRemoteConfig(credentialsPath) {
   const { shortlink_domain, thumbnail_server } = hubsConfigs.general;
 
   const env = {
-    HUBS_SERVER:"localhost:8080",
+    HUBS_SERVER:`localhost:${port}`,
     IS_MOZ: "false",
     RETICULUM_SERVER: host,
     SHORTLINK_DOMAIN: shortlink_domain,
-    CORS_PROXY_SERVER: "localhost:8080/cors-proxy",
+    CORS_PROXY_SERVER: `localhost:${port}/cors-proxy`,
     THUMBNAIL_SERVER: thumbnail_server,
     NON_CORS_PROXY_DOMAINS: "localhost"
   };
@@ -99,17 +99,67 @@ async function loadRemoteConfig(credentialsPath) {
   return { appConfig, env };
 }
 
+function findFileInAncestors(rootDir, fileName, maxDepth = 4) {
+  let curDir = rootDir;
+  let depth = 0;
+
+  while (depth < maxDepth) {
+    const filePath = path.join(curDir, fileName);
+
+    if (fs.existsSync(filePath)) {
+      return filePath;
+    }
+
+    curDir = path.dirname(curDir);
+
+    maxDepth++;
+  }
+
+  return null;
+}
+
 class HubsDevServer {
   constructor(options) {
+    const hubsConfigPath = (options && options.hubsConfigPath) || findFileInAncestors(process.cwd(), "hubs.config.js");
+    
+    if (!hubsConfigPath) {
+      throw new Error("Couldn't find hubs.config.js");
+    }
+
+    const basePath = path.dirname(hubsConfigPath);
+
     this.options = Object.assign({
+      port: 8081,
       appConfig: undefined,
-      hubsCacheDir: path.join(__dirname, ".hubs"),
-      hubsPath: path.join(__dirname, "node_modules", "hubs-client", "dist"),
-      spokePath: path.join(__dirname, "node_modules", "spoke-client", "dist"),
+      hubsConfigPath,
+      hubsCacheDir: path.join(basePath, ".hubs"),
+      hubsPath: path.join(basePath, "node_modules", "hubs-client", "dist"),
+      spokePath: path.join(basePath, "node_modules", "spoke-client", "dist"),
     }, options);
 
     this.config = undefined;
+
+    const hubsConfig = require(hubsConfigPath);
+
+    const pluginDefs = hubsConfig.plugins || {};
     this.plugins = {};
+    this.pluginEntries = {};
+
+    for (const key in pluginDefs) {
+      this.plugins[key] = [];
+      
+      pluginDefs[key].forEach(({ name, path: pluginPath }) => {
+        this.plugins[key].push({
+          type: "js",
+          url: `/${name}.plugin.js`,
+          options: {
+            globalVar: `HubsPlugin_${name}`
+          }
+        });
+
+        this.pluginEntries[name] = path.resolve(basePath, pluginPath);
+      });
+    }
   }
 
   async createHTTPSConfig() {
@@ -180,9 +230,9 @@ class HubsDevServer {
     const credentialsPath = path.join(this.options.hubsCacheDir, ".hubs-cloud-credentials");
 
     if (fs.existsSync(credentialsPath)) {
-      this.config = await loadRemoteConfig(credentialsPath);
+      this.config = await loadRemoteConfig(credentialsPath, this.options.port);
     } else {
-      this.config = await createDefaultConfig(this.options.hubsPath);
+      this.config = await createDefaultConfig(this.options.hubsPath, this.options.port);
     }
 
     this.config.appConfig.plugins = this.plugins;
@@ -201,13 +251,13 @@ class HubsDevServer {
 
     this.spokeHeader =  `
       ${metaTagHeader}
-      <meta name="env:base_assets_path" content="https://localhost:8080/spoke/">
+      <meta name="env:base_assets_path" content="https://localhost:${this.options.port}/spoke/">
       <title>${translations["editor-name"]}</title>
       ${appConfigheader}`;
 
     this.hubsHeader =  `
       ${metaTagHeader}
-      <meta name="env:base_assets_path" content="https://localhost:8080/">
+      <meta name="env:base_assets_path" content="https://localhost:${this.options.port}/">
       <title>${translations["app-name"]}</title>
       ${appConfigheader}`;
   }
@@ -236,7 +286,7 @@ class HubsDevServer {
       const redirectLocation = req.header("location");
   
       if (redirectLocation) {
-        res.header("Location", "https://localhost:8080/cors-proxy/" + redirectLocation);
+        res.header("Location", `https://localhost:${this.options.port}/cors-proxy/` + redirectLocation);
       }
   
       if (req.method === "OPTIONS") {
@@ -292,8 +342,8 @@ class HubsDevServer {
 
       const hubPageHandler = pageHandler(path.join(this.options.hubsPath, "hub.html"), this.hubsHeader);
       app.get("/hub.html*", addHubHeaders("room"), hubPageHandler);
-      app.get(/[a-zA-Z0-9]{7}/, addHubHeaders("room"), hubPageHandler);
-      app.get(/[a-zA-Z0-9]{7}\/*/, addHubHeaders("room"), hubPageHandler);
+      app.get(/^\/([a-zA-Z0-9]{7})$/, addHubHeaders("room"), hubPageHandler);
+      app.get(/^\/([a-zA-Z0-9]{7}\/*)/, addHubHeaders("room"), hubPageHandler);
     }
   }
 }

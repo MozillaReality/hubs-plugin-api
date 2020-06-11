@@ -61,19 +61,22 @@ window.APP_CONFIG = {
 
 Currently this configuration is injected into each page by the `HubsDevServer`, in production the Hubs backend server (Reticulum) injects the `APP_CONFIG` into the page.
 
-In `webpack.config.js` you can see how we register our `home-page` plugin:
+You register plugins in the `hubs.config.js` file. This is consumed in the `HubsDevServer` to generate the `APP_CONFIG` and in webpack to generate the entry points.
 
 ```js
-const globalVar = "MY_PLUGIN";
-
-hubsDevServer.registerPlugin("home-page", "js", "/index.plugin.js", { globalVar });
+module.exports = {
+  plugins: {
+    "home-page": [
+      {
+        name: "HomePage",
+        path: "./pages/index.js"
+      }
+    ]
+  }
+};
 ```
 
-```ts
-function registerPlugin(key: string, type: string, url: string, options?: { globalVar?: string })
-```
-
-You will also see that we make use of Webpack's externals to load third party code that is already in the page from global variables:
+We make use of Webpack's externals to load third party code that is already in the page from global variables. This reduces bundle size and page load times.
 
 ```js
 {

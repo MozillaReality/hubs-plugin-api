@@ -2,18 +2,15 @@ const path = require("path");
 const HubsDevServer = require("./server/HubsDevServer");
 
 module.exports = async (env, args) => {
-  const hubsDevServer = new HubsDevServer();
-
-  const globalVar = "MY_PLUGIN";
-
-  hubsDevServer.registerPlugin("home-page", "js", "/index.plugin.js", { globalVar });
+  const port = args.port || 8080;
+  const hubsDevServer = new HubsDevServer({ port });
 
   await hubsDevServer.init();
   const https = await hubsDevServer.createHTTPSConfig();
   
   return {
     entry: {
-      index: "./pages/index.js"
+      ...hubsDevServer.pluginEntries
     },
     module: {
       rules: [
@@ -41,10 +38,11 @@ module.exports = async (env, args) => {
     output: {
       path: path.resolve(__dirname, "dist"),
       filename: "[name].plugin.js",
-      library: globalVar,
+      library: ["HubsPlugin_[name]"],
       libraryTarget: "umd"
     },
     devServer: {
+      port,
       https,
       contentBase: path.join(__dirname, "dist"),
       before: (app) => {
