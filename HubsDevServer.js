@@ -30,7 +30,7 @@ async function createDefaultConfig(hubsPath) {
     // Enable all features with a boolean type
     if (categoryName === "features") {
       for (const [key, schema] of Object.entries(category)) {
-        if (key === "require_account_for_join") {
+        if (key === "require_account_for_join" || key === "disable_room_creation") {
           appConfig[categoryName][key] = false;
         } else {
           appConfig[categoryName][key] = schema.type === "boolean" ? true : null;
@@ -281,6 +281,8 @@ class HubsDevServer {
 
       app.get("/", addHubHeaders("hub"), pageHandler(path.join(this.options.hubsPath, "index.html"), this.hubsHeader));
       app.get("/whats-new", pageHandler(path.join(this.options.hubsPath, "whats-new.html"), this.hubsHeader));
+      app.get("/signin", pageHandler(path.join(this.options.hubsPath, "signin.html"), this.hubsHeader));
+      app.get("/verify", pageHandler(path.join(this.options.hubsPath, "verify.html"), this.hubsHeader));
       app.get("/cloud", pageHandler(path.join(this.options.hubsPath, "cloud.html"), this.hubsHeader));
       app.get("/discord", pageHandler(path.join(this.options.hubsPath, "discord.html"), this.hubsHeader));
       app.get("/link/?*", pageHandler(path.join(this.options.hubsPath, "link.html"), this.hubsHeader));

@@ -23,6 +23,18 @@ module.exports = async (env, args) => {
           use: {
             loader: "babel-loader"
           }
+        },
+        {
+          test: /\.css$/i,
+          use: [
+            'style-loader',
+            {
+              loader: 'css-loader',
+              options: {
+                modules: true
+              }
+            }
+          ]
         }
       ]
     },
@@ -41,7 +53,12 @@ module.exports = async (env, args) => {
     },
     devtool: args.mode === "production" ? "source-map" : "eval-source-map",
     externals: {
-      react: "React"
+      react: "React",
+      "react-dom": "ReactDOM",
+      "react-intl": "ReactIntl",
+      "prop-types": "PropTypes",
+      "classnames": "ClassNames",
+      hubs: "Hubs"
     }
   };
 };
