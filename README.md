@@ -150,7 +150,7 @@ window.Hubs = {
   - [Hubs.React.HomePage](#hubsreacthomepage) - Components and Hooks available on the home page.
     - [Hubs.React.HomePage.PWAButton](#hubsreacthomepagepwabutton) - Button for installing the Hubs Progressive Web App
     - [Hubs.React.HomePage.CreateRoomButton](#hubsreacthomepagecreateroombutton) - Button for creating and redirecting to a Hubs Room
-    - [Hubs.React.HomePage.useFeaturedRooms](#hubsreacthomepageusefeaturedtooms) - Hook for loading public/favorited rooms
+    - [Hubs.React.HomePage.useFeaturedRooms](#hubsreacthomepageusefeaturedrooms) - Hook for loading public/favorited rooms
     - [Hubs.React.HomePage.useHomePageRedirect](#hubsreacthomepageusehomepageredirect) - Hook for redirecting to verification page when clicking on the magic link in the login email.
     - [Hubs.React.HomePage.Styles](#hubsreacthomepagestyles) - CSS module for all the base home page styles
     - [Hubs.React.HomePage.discordLogoSmall](#hubsreacthomepagediscordlogosmall) - url for the Discord logo to be used for the discord bot message
@@ -161,7 +161,7 @@ window.Hubs = {
 
   Check if a feature is enabled by the current app config. Features are defined in the Hubs [schema.toml](https://github.com/mozilla/hubs/blob/master/src/schema.toml) file and correspond to configuration in the admin panel.
 
-  Example:
+  *Example:*
 
   ```js
     Hubs.config.feature("disable_room_creation") === false
@@ -171,7 +171,7 @@ window.Hubs = {
 
   Get an image url from the current app config. Images are defined in the Hubs [schema.toml](https://github.com/mozilla/hubs/blob/master/src/schema.toml) file and correspond to configuration in the admin panel.
 
-  Example:
+  *Example:*
 
   ```js
     Hubs.config.image("logo") === "https://my-hubs-cloud.com/logo.png";
@@ -184,7 +184,7 @@ window.Hubs = {
 
   Get a url from the current app config. Links are defined in the Hubs [schema.toml](https://github.com/mozilla/hubs/blob/master/src/schema.toml) file and correspond to configuration in the admin panel.
 
-  Example:
+  *Example:*
 
   ```js
     Hubs.config.link("docs", "https://hubs.mozilla.com/docs") === "https://hubs.mozilla.com/docs";
