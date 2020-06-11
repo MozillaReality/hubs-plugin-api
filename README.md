@@ -11,8 +11,8 @@ Please give us feedback on the API in the #extensibility channel on our [Discord
 Run the following commands:
 
 ```
-git clone https://github.com/MozillaReality/hubs-webpack-starter.git
-cd hubs-webpack-starter
+git clone https://github.com/MozillaReality/hubs-plugin-api.git
+cd hubs-plugin-api
 npm install
 npm start
 ```
