@@ -38,7 +38,7 @@ module.exports = async (env, args) => {
     output: {
       path: path.resolve(__dirname, "dist"),
       filename: "[name].plugin.js",
-      library: "HubsPlugin[name]",
+      library: "HubsPlugin_[name]",
       libraryTarget: "umd",
       sourceMapFilename: "[name].plugin.js.map"
     },
