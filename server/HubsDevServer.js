@@ -343,7 +343,7 @@ class HubsDevServer {
       const hubPageHandler = pageHandler(path.join(this.options.hubsPath, "hub.html"), this.hubsHeader);
       app.get("/hub.html*", addHubHeaders("room"), hubPageHandler);
       app.get(/^\/([a-zA-Z0-9]{7})$/, addHubHeaders("room"), hubPageHandler);
-      app.get(/^\/([a-zA-Z0-9]{7}\/*)/, addHubHeaders("room"), hubPageHandler);
+      app.get(/^\/([a-zA-Z0-9]{7}\/.*)/, addHubHeaders("room"), hubPageHandler);
     }
   }
 }
