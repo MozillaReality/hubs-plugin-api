@@ -256,7 +256,7 @@ import Hubs from "hubs";
 ### Hubs.React.Common
   To Do
 
-### Hubs.React.Common.PageStyles
+### Hubs.React.Common.styles
   To Do
 
 ### Hubs.React.Common.Page
@@ -274,7 +274,7 @@ import Hubs from "hubs";
 ### Hubs.React.Common.Tiles
   To Do
 
-### Hubs.React.Common.Styles
+### Hubs.React.Common.styles
   To Do
 
 ### Hubs.React.HomePage
@@ -292,7 +292,7 @@ import Hubs from "hubs";
 ### Hubs.React.HomePage.useHomePageRedirect
   To Do
 
-### Hubs.React.HomePage.Styles
+### Hubs.React.HomePage.styles
   To Do
 
 ### Hubs.React.HomePage.discordLogoSmall
