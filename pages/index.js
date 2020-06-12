@@ -5,23 +5,9 @@ import Hubs from "hubs";
 const {
   config,
   React: {
-    Common: {
-      Page,
-      IfFeature,
-      AuthContext
-    },
-    Media: {
-      Tiles: MediaTiles,
-      Styles: mediaBrowserStyles
-    },
-    HomePage: {
-      PWAButton,
-      CreateRoomButton,
-      useFeaturedRooms,
-      useHomePageRedirect,
-      Styles: styles,
-      discordLogoSmall
-    }
+    Common: { Page, IfFeature, AuthContext },
+    Media: { Tiles: MediaTiles, styles: mediaBrowserStyles },
+    HomePage: { PWAButton, CreateRoomButton, useFeaturedRooms, useHomePageRedirect, styles, discordLogoSmall }
   }
 } = Hubs;
 import customStyles from "./index.css";

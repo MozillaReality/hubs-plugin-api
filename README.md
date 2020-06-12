@@ -110,37 +110,8 @@ Our webpack config also lets you use ES2015 imports because of the externals con
 import Hubs from "hubs";
 ```
 
-At this time these are the exported members:
-
-```js
-window.Hubs = {
-  config,
-  PhoenixUtils,
-  React: {
-    Common: {
-      PageStyles,
-      Page,
-      IfFeature,
-      AuthContext
-    },
-    Media: {
-      Tiles
-      Styles
-    },
-    HomePage: {
-      PWAButton,
-      CreateRoomButton,
-      useFeaturedRooms,
-      useHomePageRedirect,
-      Styles
-      discordLogoSmall
-    }
-  }
-};
-```
-
+- [Hubs](#hubs) - Core API methods
 - [Hubs.config](#hubsconfig) - App Config Utilities
-- [Hubs.PhoenixUtils](#hubsphoenixutils) - Phoenix Utilities
 - [Hubs.React](#hubsreact) - React Components, Hooks, and Styles
   - [Hubs.React.Common](#hubsreactcommon) - Components and styles available on all pages.
     - [Hubs.React.Common.PageStyles](#hubsreactcommonpagestyles) - CSS module containing styles used across all pages (typography, CSS reset, etc.).
@@ -158,9 +129,94 @@ window.Hubs = {
     - [Hubs.React.HomePage.Styles](#hubsreacthomepagestyles) - CSS module for all the base home page styles
     - [Hubs.React.HomePage.discordLogoSmall](#hubsreacthomepagediscordlogosmall) - url for the Discord logo to be used for the discord bot message
 
+### Hubs
+  #### .isAuthenticated(): boolean
+
+  Returns true if the user has an authentication token stored in local storage.
+
+  ##### Example:
+
+  ```js
+    Hubs.isAuthenticated() === true
+  ```
+
+  #### .getAuthToken(): string | undefined
+
+  Return the authentication token for the user. Returns `undefined` if the user is not logged in.
+
+  ##### Example:
+
+  ```js
+    Hubs.getAuthToken() === "super-secret-token"
+  ```
+
+  #### .postJSON(path, payload, options?): Promise<Object>
+
+  Make a POST request with a json body to Reticulum. `options` are the same options passed to the fetch API. Returns the json parsed response.
+
+  ##### Example:
+
+  ```js
+    const response = await Hubs.postJSON("/api/v1/hubs", {
+      hub: {
+        name: "My Room"
+      }
+    });
+  ```
+
+  #### .postJSONAuthenticated(path, payload, options?): Promise<Object>
+
+  Make an authenticated POST request with a json body to Reticulum. `options` are the same options passed to the fetch API. Returns the json parsed response. Throws an error if the user is not currently logged in.
+
+  ##### Example:
+
+  ```js
+    const response = await Hubs.postJSONAuthenticated("/api/v1/hubs", {
+      hub: {
+        name: "My Room"
+      }
+    });
+  ```
+
+  #### .createRoom(params?): Promise<Object>
+
+  Create a room for the current user. If the user is not logged in the room will be created anonymously.
+
+  ##### Request:
+  ```ts
+  {
+    name?: string
+    description?: string
+    scene_id?: string
+    room_size?: number
+    user_data?: {}
+  }
+
+  ```
+
+  ##### Example Response:
+  ```ts
+    {
+      creator_assignment_token: string
+      embed_token: string
+      hub_id: string
+      status: string
+      url: string
+    }
+  ```
+
+  ##### Example:
+
+  ```js
+    const response = await Hubs.createRoom({
+      name: "My Room",
+      scene_id: "123abc"
+    });
+  ```
+
 ### Hubs.config
 
-  #### .feature(featureName)
+  #### .feature(featureName): boolean | string | undefined
 
   Check if a feature is enabled by the current app config. Features are defined in the Hubs [schema.toml](https://github.com/mozilla/hubs/blob/master/src/schema.toml) file and correspond to configuration in the admin panel.
 
@@ -170,7 +226,7 @@ window.Hubs = {
     Hubs.config.feature("disable_room_creation") === false
   ```
   
-  #### .image(imageName, cssUrl?)
+  #### .image(imageName, cssUrl?): string | undefined
 
   Get an image url from the current app config. Images are defined in the Hubs [schema.toml](https://github.com/mozilla/hubs/blob/master/src/schema.toml) file and correspond to configuration in the admin panel.
 
@@ -183,7 +239,7 @@ window.Hubs = {
     Hubs.config.image("logo", true) === "url(https://my-hubs-cloud.com/logo.png)";
   ```
 
-  #### .link(linkName, defaultValue?)
+  #### .link(linkName, defaultValue?) string | undefined
 
   Get a url from the current app config. Links are defined in the Hubs [schema.toml](https://github.com/mozilla/hubs/blob/master/src/schema.toml) file and correspond to configuration in the admin panel.
 
@@ -192,9 +248,6 @@ window.Hubs = {
   ```js
     Hubs.config.link("docs", "https://hubs.mozilla.com/docs") === "https://hubs.mozilla.com/docs";
   ```
-
-### Hubs.PhoenixUtils
-  To Do
 
 ### Hubs.React
   To Do
