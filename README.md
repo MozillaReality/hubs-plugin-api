@@ -130,6 +130,7 @@ import Hubs from "hubs";
     - [Hubs.React.HomePage.discordLogoSmall](#hubsreacthomepagediscordlogosmall) - url for the Discord logo to be used for the discord bot message
 
 ### Hubs
+
   #### .isAuthenticated(): boolean
 
   Returns true if the user has an authentication token stored in local storage.
@@ -150,7 +151,7 @@ import Hubs from "hubs";
     Hubs.getAuthToken() === "super-secret-token"
   ```
 
-  #### .postJSON(path, payload, options?): Promise<Object>
+  #### .postJSON(path, payload, options?): Promise\<Object\>
 
   Make a POST request with a json body to Reticulum. `options` are the same options passed to the fetch API. Returns the json parsed response.
 
@@ -164,7 +165,7 @@ import Hubs from "hubs";
     });
   ```
 
-  #### .postJSONAuthenticated(path, payload, options?): Promise<Object>
+  #### .postJSONAuthenticated(path, payload, options?): Promise\<Object\>
 
   Make an authenticated POST request with a json body to Reticulum. `options` are the same options passed to the fetch API. Returns the json parsed response. Throws an error if the user is not currently logged in.
 
@@ -178,7 +179,7 @@ import Hubs from "hubs";
     });
   ```
 
-  #### .createRoom(params?): Promise<Object>
+  #### .createRoom(params?): Promise\<Object\>
 
   Create a room for the current user. If the user is not logged in the room will be created anonymously.
 
