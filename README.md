@@ -195,7 +195,7 @@ import Hubs from "hubs";
 
   ```
 
-  ##### Example Response:
+  ##### Response:
   ```ts
     {
       creator_assignment_token: string
