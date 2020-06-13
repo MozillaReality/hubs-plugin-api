@@ -17,6 +17,7 @@
     "babel-loader": "^8.1.0",
     "cors": "^2.8.5",
     "css-loader": "^3.5.3",
+    "express-http-proxy": "^1.6.0",
     "hubs-client": "0.0.6",
     "node-fetch": "^2.6.0",
     "request": "^2.88.2",

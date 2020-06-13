@@ -1,22 +1,25 @@
 import React, { useContext } from "react";
 import { FormattedMessage } from "react-intl";
 import classNames from "classnames";
-import Hubs from "hubs";
-const {
-  config,
-  React: {
-    Common: { Page, IfFeature, AuthContext },
-    Media: { Tiles: MediaTiles, styles: mediaBrowserStyles },
-    HomePage: { PWAButton, CreateRoomButton, useFeaturedRooms, useHomePageRedirect, styles, discordLogoSmall }
-  }
-} = Hubs;
+import Hubs from "@hubs/core";
+import { Page, IfFeature, AuthContext } from "@hubs/react";
+import { MediaTiles, styles as mediaBrowserStyles } from "@hubs/media-browser";
+import {
+  PWAButton,
+  CreateRoomButton,
+  useFeaturedRooms,
+  useHomePageRedirect,
+  PageStyles as styles,
+  discordLogoSmall
+} from "@hubs/home-page";
 import customStyles from "./index.css";
 
-export function HomePage() {
+function HomePage() {
   useHomePageRedirect();
   const featuredRooms = useFeaturedRooms();
   const auth = useContext(AuthContext);
 
+  const config = Hubs.config;
   const canCreateRooms = !config.feature("disable_room_creation") || auth.isAdmin;
 
   return (
@@ -75,3 +78,5 @@ export function HomePage() {
     </Page>
   );
 }
+
+Hubs.registerPlugin("home-page", { HomePage });
