@@ -225,3 +225,22 @@ The Hubs SDK is broken into packages that
 ### Hubs.mediaBrowser / @hubs/media-browser
   To Do
 
+## Developing Plugins Against a Local Copy of Hubs
+
+You can load a plugin in a local Hubs dev server by passing the `--env.pluginManifest=<plugin-manifest-url>` option.
+
+##### Example:
+
+Start the plugin dev server on a port other than 8080.
+
+```
+cd hubs-plugin-api
+npm start -- --port 8081
+```
+
+Start the Hubs dev server with the plugin manifest url.
+
+```
+cd hubs
+npm run dev -- --env.pluginManifest="https://localhost:8081/plugin-manifest.json"
+```

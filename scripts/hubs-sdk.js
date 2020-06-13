@@ -16,12 +16,14 @@ const program = new Commander.Command("hubs-sdk")
 
 program
   .command("serve [project-path]")
+  .option("-p --port <port>", "The port to serve on.", 8080)
   .description("Serve the project for plugin development.")
-  .action(async (projectPathArg) => {
+  .action(async (projectPathArg, cmd) => {
+    console.log(`Starting dev server at https://localhost:${cmd.port}`);
+
     const projectPath = resolveProjectPath(projectPathArg);
     const hubsConfigPath = path.resolve(projectPath, "hubs.config.js");
-    const port = 8080;
-    const devServer = new HubsSDKDevServer({ port, projectPath });
+    const devServer = new HubsSDKDevServer({ port: cmd.port, projectPath });
     await devServer.init();
     const webpackConfig = hubsSDKWebpackConfig(hubsConfigPath, undefined, { mode: "development" });
 
@@ -37,7 +39,7 @@ program
     const compiler = webpack(webpackConfig);
     devServer.app.use(webpackDevMiddleware(compiler));
     devServer.app.use(webpackHotMiddleware(compiler));
-    await devServer.listen(port);
+    await devServer.listen(cmd.port);
   });
 
 program
