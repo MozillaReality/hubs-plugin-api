@@ -28,7 +28,7 @@ function defaultRequestToExternal(request) {
   }
 }
 
-class HubsWebpackPlugin {
+class HubsSDKWebpackPlugin {
   constructor(config) {
     this.config = config;
     this.externalizedDeps = new Set();
@@ -100,4 +100,4 @@ class HubsWebpackPlugin {
   }
 }
 
-module.exports = HubsWebpackPlugin;
+module.exports = HubsSDKWebpackPlugin;
