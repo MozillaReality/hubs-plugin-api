@@ -21,7 +21,7 @@
     "css-loader": "^3.5.3",
     "express-http-proxy": "^1.6.0",
     "hubs-client": "0.0.9",
-    "node-fetch": "^2.6.0",
+    "node-fetch": "^2.6.7",
     "request": "^2.88.2",
     "rimraf": "^3.0.2",
     "selfsigned": "^1.10.7",
